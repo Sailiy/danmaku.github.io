@@ -43,14 +43,14 @@
       }
       var imgDanmuPool = new DanmakuPool(10)
       var imgDanmuTrack = new DanmaTrack(imgDanmuPool, {
-        top: 20,
+        top: 100,
         height: 40
       })
       danmuku.addDanmuTrack(imgDanmuTrack)
 
       var videoDanmuPool = new DanmakuPool(10)
       var videoDanmuTrack = new DanmaTrack(videoDanmuPool, {
-        top: 200,
+        top: 400,
         height: 200
       })
       danmuku.addDanmuTrack(videoDanmuTrack)
@@ -102,12 +102,28 @@
         })
         videoDanmuPool.addMessage(videoDanmu)
       }
+     
       document.getElementById('btn_send').addEventListener('click', sendDanmu)
       document.getElementById('btn_send_mut').addEventListener('click', sendDanmuMtu)
       document.getElementById('btn_pause').addEventListener('click', handlePause)
       document.getElementById('btn_start').addEventListener('click', handleStart)
       document.getElementById('btn_send_img').addEventListener('click', sendDanmuImg)
       document.getElementById('btn_send_video').addEventListener('click', sendDanmuVideo)
+      function autoSend(){
+         setInterval(()=>{
+            sendDanmuMtu()
+         },10000)
+         setInterval(()=>{
+            sendDanmuVideo()
+         },6000)
+         setInterval(()=>{
+            sendDanmuImg()
+         },3000)
+         setTimeout(() => {
+            sendDanmuMtu()
+         }, 1000);
+      }
+      autoSend()
     </script>
   </body>
 </html>
