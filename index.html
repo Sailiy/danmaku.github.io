@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>demo</title>
+    <style>
+      canvas {
+        width: 1280px;
+        height: 720px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="cav">你的浏览器不支持canvas</canvas>
+    <br />
+    <button id="btn_pause">暂停</button>
+    <button id="btn_start">播放</button>
+    <button id="btn_send">发送</button>
+    <button id="btn_send_mut">批量发送</button>
+    <button id="btn_send_img">发送图片消息</button>
+    <button id="btn_send_video">发送视频消息</button>
+    <script src="https://unpkg.com/danmaku-plus/dist/danmaku-plus.umd.js"></script>
+    <script>
+      const colorArr = ['red', 'blue', '#fff', '#000', 'pink', 'orange']
+      const { DanmakuPool, DanmaTrack, Danmaku, TextMessage, ImgMessage, GifMessage,VideoMessage } =danmakuPlus
+      var canvas = document.getElementById('cav')
+      var danmuku = new Danmaku(canvas, {
+        width: 1280,
+        height: 720
+      })
+      var danmuPool = new DanmakuPool(300)
+
+      for (var i = 0; i < 6; i++) {
+        var danmuTrack = new DanmaTrack(danmuPool, {
+          top: (10 + 30) * i + 10,
+          height: 30
+        })
+        danmuku.addDanmuTrack(danmuTrack)
+      }
+      var imgDanmuPool = new DanmakuPool(10)
+      var imgDanmuTrack = new DanmaTrack(imgDanmuPool, {
+        top: 20,
+        height: 40
+      })
+      danmuku.addDanmuTrack(imgDanmuTrack)
+
+      var videoDanmuPool = new DanmakuPool(10)
+      var videoDanmuTrack = new DanmaTrack(videoDanmuPool, {
+        top: 200,
+        height: 200
+      })
+      danmuku.addDanmuTrack(videoDanmuTrack)
+
+      danmuku.start()
+      function handlePause() {
+        danmuku.pause()
+      }
+      function handleStart() {
+        danmuku.start()
+      }
+      function sendDanmu() {
+        danmuPool.addMessage(
+          new TextMessage({
+            mMsg: parseInt(Math.random() * 10000000) + ''
+          })
+        )
+      }
+
+      function sendDanmuMtu() {
+        var message = []
+        for (var i = 0; i < 100; i++) {
+          message.push(
+            new TextMessage({
+              mMsg: parseInt(Math.random() * 10000000) + '',
+              color: colorArr[Math.floor(Math.random() * colorArr.length)]
+            })
+          )
+        }
+        danmuPool.addMessages(message)
+      }
+
+      function sendDanmuImg() {
+        var imgDanmu = new ImgMessage({
+          url: '/test.gif'
+        })
+        imgDanmuPool.addMessage(imgDanmu)
+        // gif目前有bug，暂不支持
+        // var imgDanmu2 = new GifMessage({
+        //   url: '/test.gif'
+        // })
+        // imgDanmuPool.addMessage(imgDanmu2)
+      }
+      function sendDanmuVideo() {
+        var videoDanmu = new VideoMessage({
+          url: 'https://vjs.zencdn.net/v/oceans.mp4',
+          width:300,
+          height:200
+        })
+        videoDanmuPool.addMessage(videoDanmu)
+      }
+      document.getElementById('btn_send').addEventListener('click', sendDanmu)
+      document.getElementById('btn_send_mut').addEventListener('click', sendDanmuMtu)
+      document.getElementById('btn_pause').addEventListener('click', handlePause)
+      document.getElementById('btn_start').addEventListener('click', handleStart)
+      document.getElementById('btn_send_img').addEventListener('click', sendDanmuImg)
+      document.getElementById('btn_send_video').addEventListener('click', sendDanmuVideo)
+    </script>
+  </body>
+</html>
