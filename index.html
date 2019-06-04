@@ -88,7 +88,7 @@
           url: '/test.gif'
         })
         imgDanmuPool.addMessage(imgDanmu)
-        // gif目前有bug，暂不支持
+        // gif目前有bug，暂不支持。动图可以用视频方式展示，压缩比更高
         // var imgDanmu2 = new GifMessage({
         //   url: '/test.gif'
         // })
@@ -115,10 +115,10 @@
          },10000)
          setInterval(()=>{
             sendDanmuVideo()
-         },6000)
+         },20000)
          setInterval(()=>{
             sendDanmuImg()
-         },3000)
+         },12000)
          setTimeout(() => {
             sendDanmuMtu()
          }, 1000);
